@@ -33,8 +33,7 @@ class Perceptron:
 				# does not match the target
 				# determine the error
                 error = p-target.item()
-                if (error):
-                    misclassified += 1
+                misclassified += error
                 # update the weight matrix
                 self.w += -self.alpha * x * error
 

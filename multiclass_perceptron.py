@@ -10,25 +10,30 @@ def loadData():
     print(data)
     
     # make the dataset linearly separable
-    data = data[:100]
-    data[4] = np.where(data.iloc[:, -1]=='Iris-setosa', 0, 1)
+    data = data[:]
+    data[4] = np.where(data.iloc[:, -1]=='Iris-setosa', 0, np.where(data.iloc[:, -1] == 'Iris-versicolor', 1, 2))
     data = np.asmatrix(data, dtype = 'float64')
     return data
 data = loadData()
 
+
 plt.scatter(np.array(data[:50,0]), np.array(data[:50,2]), marker='o', label='setosa')
-plt.scatter(np.array(data[50:,0]), np.array(data[50:,2]), marker='x', label='versicolor')
+plt.scatter(np.array(data[50:100,0]), np.array(data[50:100,2]), marker='x', label='versicolor')
+plt.scatter(np.array(data[100:,0]), np.array(data[100:,2]), marker='*', label='virginica')
 plt.xlabel('petal length')
 plt.ylabel('sepal length')
 plt.legend()
 plt.show()
 
+np.random.shuffle(data)
 
-features        = np.concatenate((data[10:50, :-1] , data[60:,:-1]),axis=0)
-target          = np.concatenate((data[10:50, -1] , data[60:,-1]),axis=0)
 
-testFeatures    = np.concatenate((data[:10, :-1]    , data[50:60,:-1]),axis=0)
-testTarget      = np.concatenate((data[:10, -1]    , data[50:60,-1]),axis=0)
+
+features        = data[20:, :-1]
+target          = data[20:, -1]
+
+testFeatures    = data[:20, :-1]
+testTarget      = data[:20, -1]
 
 print(f"Training on :{features.shape}...")
 p = Perceptron(features.shape[1],alpha=0.1)
